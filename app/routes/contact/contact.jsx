@@ -1,3 +1,4 @@
+'use client'
 import { Button } from '~/components/button';
 import { DecoderText } from '~/components/decoder-text';
 import { Divider } from '~/components/divider';
@@ -15,7 +16,7 @@ import { cssProps, msToNum, numToMs } from '~/utils/style';
 import { baseMeta } from '~/utils/meta';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import { json } from '@remix-run/cloudflare';
-import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import emailjs from '@emailjs/browser';
 import styles from './contact.module.css';
 
 export const meta = () => {
@@ -30,72 +31,76 @@ const MAX_EMAIL_LENGTH = 512;
 const MAX_MESSAGE_LENGTH = 4096;
 const EMAIL_PATTERN = /(.+)@(.+){2,}\.(.+){2,}/;
 
-export async function action({ context, request }) {
-  const ses = new SESClient({
-    region: 'us-east-1',
-    credentials: {
-      accessKeyId: context.cloudflare.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: context.cloudflare.env.AWS_SECRET_ACCESS_KEY,
-    },
-  });
 
+
+export async function action({ request }) {
   const formData = await request.formData();
-  const isBot = String(formData.get('name'));
+  const isBot = String(formData.get('bot_field')); // Honeypot field
+  const name = String(formData.get('name'));
   const email = String(formData.get('email'));
+  const subject = String(formData.get('subject'));
   const message = String(formData.get('message'));
   const errors = {};
 
   // Return without sending if a bot trips the honeypot
   if (isBot) return json({ success: true });
 
-  // Handle input validation on the server
+  // Validation
+  if (!name || name.trim().length < 2) {
+    errors.name = 'Please enter a valid name with at least 2 characters.';
+  }
   if (!email || !EMAIL_PATTERN.test(email)) {
     errors.email = 'Please enter a valid email address.';
   }
-
+  if (!subject || subject.trim().length < 3) {
+    errors.subject = 'Please enter a valid subject.';
+  }
   if (!message) {
     errors.message = 'Please enter a message.';
-  }
-
-  if (email.length > MAX_EMAIL_LENGTH) {
-    errors.email = `Email address must be shorter than ${MAX_EMAIL_LENGTH} characters.`;
-  }
-
-  if (message.length > MAX_MESSAGE_LENGTH) {
-    errors.message = `Message must be shorter than ${MAX_MESSAGE_LENGTH} characters.`;
   }
 
   if (Object.keys(errors).length > 0) {
     return json({ errors });
   }
 
-  // Send email via Amazon SES
-  await ses.send(
-    new SendEmailCommand({
-      Destination: {
-        ToAddresses: [context.cloudflare.env.EMAIL],
-      },
-      Message: {
-        Body: {
-          Text: {
-            Data: `From: ${email}\n\n${message}`,
-          },
-        },
-        Subject: {
-          Data: `Portfolio message from ${email}`,
-        },
-      },
-      Source: `Portfolio <${context.cloudflare.env.FROM_EMAIL}>`,
-      ReplyToAddresses: [email],
-    })
-  );
+  // Send email via EmailJS
+  try {
+   console.log(name,email,subject,message);
 
-  return json({ success: true });
+    const emailResponse = await emailjs.send(
+      'service_mqqwwht',
+      'template_zw9h2hv',
+      {
+        user_name: name,
+        user_email: email,
+        subject: subject,
+        message: message,
+      },
+      'Fw1JaWi8CImATBuGr'
+    );
+    console.log('emailResponse');
+    console.log(emailResponse);
+    if (emailResponse.status === 200) {
+      return json({ success: true });
+    } else {
+      throw new Error('Failed to send email');
+    }
+  } catch (error) {
+    return json({
+      errors: {
+        general: 'There was a problem sending your message. Please try again later.',
+      },
+    });
+  }
 }
+
+
 
 export const Contact = () => {
   const errorRef = useRef();
+  const name = useFormInput(''); // Add Name input
   const email = useFormInput('');
+  const subject = useFormInput(''); // Add Subject input
   const message = useFormInput('');
   const initDelay = tokens.base.durationS;
   const actionData = useActionData();
@@ -129,8 +134,8 @@ export const Contact = () => {
             {/* Hidden honeypot field to identify bots */}
             <Input
               className={styles.botkiller}
-              label="Name"
-              name="name"
+              label="Bot Field"
+              name="bot_field"
               maxLength={MAX_EMAIL_LENGTH}
             />
             <Input
@@ -138,12 +143,34 @@ export const Contact = () => {
               className={styles.input}
               data-status={status}
               style={getDelay(tokens.base.durationXS, initDelay)}
+              autoComplete="name"
+              label="Your Name"
+              name="name"
+              maxLength={100}
+              {...name}
+            />
+            <Input
+              required
+              className={styles.input}
+              data-status={status}
+              style={getDelay(tokens.base.durationXS, initDelay)}
               autoComplete="email"
-              label="Your email"
+              label="Your Email"
               type="email"
               name="email"
               maxLength={MAX_EMAIL_LENGTH}
               {...email}
+            />
+            <Input
+              required
+              className={styles.input}
+              data-status={status}
+              style={getDelay(tokens.base.durationXS, initDelay)}
+              autoComplete="off"
+              label="Subject"
+              name="subject"
+              maxLength={200}
+              {...subject}
             />
             <Input
               required
@@ -174,7 +201,9 @@ export const Contact = () => {
                   <div className={styles.formErrorContent} ref={errorRef}>
                     <div className={styles.formErrorMessage}>
                       <Icon className={styles.formErrorIcon} icon="error" />
+                      {actionData?.errors?.name}
                       {actionData?.errors?.email}
+                      {actionData?.errors?.subject}
                       {actionData?.errors?.message}
                     </div>
                   </div>
@@ -235,6 +264,7 @@ export const Contact = () => {
     </Section>
   );
 };
+
 
 function getDelay(delayMs, offset = numToMs(0), multiplier = 1) {
   const numDelay = msToNum(delayMs) * multiplier;

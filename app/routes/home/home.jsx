@@ -1,15 +1,15 @@
-import gamestackTexture2Large from '~/assets/gamestack-list-large.jpg';
-import gamestackTexture2Placeholder from '~/assets/gamestack-list-placeholder.jpg';
-import gamestackTexture2 from '~/assets/gamestack-list.jpg';
-import gamestackTextureLarge from '~/assets/gamestack-login-large.jpg';
-import gamestackTexturePlaceholder from '~/assets/gamestack-login-placeholder.jpg';
-import gamestackTexture from '~/assets/gamestack-login.jpg';
-import sliceTextureLarge from '~/assets/slice-app-large.jpg';
-import sliceTexturePlaceholder from '~/assets/slice-app-placeholder.jpg';
-import sliceTexture from '~/assets/slice-app.jpg';
-import sprTextureLarge from '~/assets/spr-lesson-builder-dark-large.jpg';
-import sprTexturePlaceholder from '~/assets/spr-lesson-builder-dark-placeholder.jpg';
-import sprTexture from '~/assets/spr-lesson-builder-dark.jpg';
+import UddeshyyaTexture2Large from '~/assets/Uddeshyya-list.jpeg';
+import UddeshyyaTexture2Placeholder from '~/assets/Uddeshyya-placeholder.jpg';
+import UddeshyyaTexture2 from '~/assets/Uddeshyya-list.jpeg';
+import UddeshyyaTextureLarge from '~/assets/Uddeshyya-login.jpeg';
+import UddeshyyaTexturePlaceholder from '~/assets/Uddeshyya-login-placeholder.jpg';
+import UddeshyyaTexture from '~/assets/Uddeshyya-login.jpeg';
+import EcellWebLarge from '~/assets/ecellweb.png';
+import EcellWebPlaceholder from '~/assets/ecellweb.png';
+import EcellWeb from '~/assets/ecellweb.png';
+import MarketWatchLarge from '~/assets/MarketWatch.png';
+import MarketWatchPlaceholder from '~/assets/spr-lesson-builder-dark-placeholder.jpg';
+import MarketWatch from '~/assets/MarketWatch.png';
 import { Footer } from '~/components/footer';
 import { baseMeta } from '~/utils/meta';
 import { Intro } from './intro';
@@ -103,17 +103,18 @@ export const Home = () => {
         sectionRef={projectOne}
         visible={visibleSections.includes(projectOne.current)}
         index={1}
-        title="Designing the future of education"
-        description="Designing a platform to help educators build better online courseware"
+        title="Market Watch"
+        description="Building a real-time stock trading practice platform for investors."
         buttonText="View project"
-        buttonLink="/projects/smart-sparrow"
+        //buttonLink="/projects/smart-sparrow"
+        buttonLink="https://market-watch-c162a.web.app/#/"
         model={{
           type: 'laptop',
           alt: 'Smart Sparrow lesson builder',
           textures: [
             {
-              srcSet: `${sprTexture} 1280w, ${sprTextureLarge} 2560w`,
-              placeholder: sprTexturePlaceholder,
+              srcSet: `${MarketWatch} 1280w, ${MarketWatchLarge} 2560w`,
+              placeholder: MarketWatchPlaceholder,
             },
           ],
         }}
@@ -124,21 +125,21 @@ export const Home = () => {
         sectionRef={projectTwo}
         visible={visibleSections.includes(projectTwo.current)}
         index={2}
-        title="Video game progress tracking"
-        description="Design and development for a video game tracking app built in React Native"
-        buttonText="View website"
-        buttonLink="https://gamestack.hamishw.com"
+        title="Uddeshhya"
+        description="Designing a streamlined app for efficient internal team management."
+        buttonText="View Project"
+        //buttonLink="/projects/smart-sparrow"
         model={{
           type: 'phone',
           alt: 'App login screen',
           textures: [
             {
-              srcSet: `${gamestackTexture} 375w, ${gamestackTextureLarge} 750w`,
-              placeholder: gamestackTexturePlaceholder,
+              srcSet: `${UddeshyyaTexture} 375w, ${UddeshyyaTextureLarge} 750w`,
+              placeholder: UddeshyyaTexturePlaceholder,
             },
             {
-              srcSet: `${gamestackTexture2} 375w, ${gamestackTexture2Large} 750w`,
-              placeholder: gamestackTexture2Placeholder,
+              srcSet: `${UddeshyyaTexture2} 375w, ${UddeshyyaTexture2Large} 750w`,
+              placeholder: UddeshyyaTexture2Placeholder,
             },
           ],
         }}
@@ -148,17 +149,17 @@ export const Home = () => {
         sectionRef={projectThree}
         visible={visibleSections.includes(projectThree.current)}
         index={3}
-        title="Biomedical image collaboration"
-        description="Increasing the amount of collaboration in Slice, an app for biomedical imaging"
+        title="E-Cell Web"
+        description="KIET E-Cell is a student body of KIET, formed in 2014 with the aim to promote an entrepreneurial culture among the young minds of today's generation"
         buttonText="View project"
-        buttonLink="/projects/slice"
+        buttonLink="https://e-cell.in/"
         model={{
           type: 'laptop',
           alt: 'Annotating a biomedical image in the Slice app',
           textures: [
             {
-              srcSet: `${sliceTexture} 800w, ${sliceTextureLarge} 1920w`,
-              placeholder: sliceTexturePlaceholder,
+              srcSet: `${EcellWeb} 800w, ${EcellWebLarge} 1920w`,
+              placeholder: EcellWebPlaceholder,
             },
           ],
         }}

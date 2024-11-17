@@ -10,7 +10,7 @@ export const navLinks = [
     pathname: '/#details',
   },
   // {
-  //   label: 'Articles',
+  //   label: 'TechStack',
   //   pathname: '/articles',
   // },
   {
@@ -21,9 +21,9 @@ export const navLinks = [
 
 export const socialLinks = [
   {
-    label: 'Bluesky',
-    url: `https://bsky.app/profile/${config.bluesky}`,
-    icon: 'bluesky',
+    label: 'linkedin',
+    url: `https://www.linkedin.com/in/${config.linkedin}`,
+    icon: 'linkedin',
   },
   {
     label: 'Figma',

@@ -1,6 +1,6 @@
-import profileImgLarge from '~/assets/profile-large.jpg';
+import profileImgLarge from '~/assets/Shashwat.jpeg';
 import profileImgPlaceholder from '~/assets/profile-placeholder.jpg';
-import profileImg from '~/assets/profile.jpg';
+import profileImg from '~/assets/Shashwat.jpeg';
 import { Button } from '~/components/button';
 import { DecoderText } from '~/components/decoder-text';
 import { Divider } from '~/components/divider';
@@ -21,7 +21,13 @@ const ProfileText = ({ visible, titleId }) => (
       <DecoderText text="Hi there" start={visible} delay={500} />
     </Heading>
     <Text className={styles.description} data-visible={visible} size="l" as="p">
-    I'm Shashwat Rai, a B.Tech student in Computer Science and Engineering at KIET, Ghaziabad, with a passion for app development and design. Skilled in Flutter & Firebase, I create impactful, user-centered applications and engaging UI/UX designs. My journey includes roles as the Technical Lead at E-Cell KIET and App Development Captain at GDSC KIET, alongside hands-on experience from internships and hackathons. I’m dedicated to driving innovation, solving real-world problems, and bringing ideas to life through technology.
+      I'm Shashwat Rai, a B.Tech student in Computer Science and Engineering at KIET,
+      Ghaziabad, with a passion for app development and design. Skilled in Flutter &
+      Firebase, I create impactful, user-centered applications and engaging UI/UX designs.
+      My journey includes roles as the Technical Lead at E-Cell KIET and App Development
+      Captain at GDSC KIET, alongside hands-on experience from internships and hackathons.
+      I’m dedicated to driving innovation, solving real-world problems, and bringing ideas
+      to life through technology.
     </Text>
   </Fragment>
 );
@@ -50,10 +56,11 @@ export const Profile = ({ id, visible, sectionRef }) => {
                 secondary
                 className={styles.button}
                 data-visible={visible}
-                href="/contact"
+                href="/Resume.pdf" // Link to your resume
+                target="_blank" // This opens the link in a new tab
                 icon="send"
               >
-                Send me a message
+                View Resume
               </Button>
             </div>
             <div className={styles.column}>
