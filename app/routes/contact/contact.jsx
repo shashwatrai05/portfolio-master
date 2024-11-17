@@ -16,7 +16,7 @@ import { cssProps, msToNum, numToMs } from '~/utils/style';
 import { baseMeta } from '~/utils/meta';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import { json } from '@remix-run/cloudflare';
-import emailjs from '@emailjs/browser';
+import emailjs from "@emailjs/browser";
 import styles from './contact.module.css';
 
 export const meta = () => {
@@ -34,7 +34,9 @@ const EMAIL_PATTERN = /(.+)@(.+){2,}\.(.+){2,}/;
 
 
 export async function action({ request }) {
+  console.log('Action function called');
   const formData = await request.formData();
+  console.log('Form data received:', formData);
   const isBot = String(formData.get('bot_field')); // Honeypot field
   const name = String(formData.get('name'));
   const email = String(formData.get('email'));
@@ -62,35 +64,60 @@ export async function action({ request }) {
   if (Object.keys(errors).length > 0) {
     return json({ errors });
   }
-
+  
   // Send email via EmailJS
   try {
-   console.log(name,email,subject,message);
 
-    const emailResponse = await emailjs.send(
-      'service_mqqwwht',
-      'template_zw9h2hv',
-      {
+    // const emailResponse = await emailjs.send(
+    //   '',
+    //   '',
+    //   {
+    //     user_name: name,
+    //     user_email: email,
+    //     subject: subject,
+    //     message: message,
+    //   },
+    //   ''
+    // );
+
+    emailjs
+  .send("service_mqqwwht", "template_zw9h2hv", {
         user_name: name,
         user_email: email,
         subject: subject,
         message: message,
-      },
-      'Fw1JaWi8CImATBuGr'
-    );
-    console.log('emailResponse');
-    console.log(emailResponse);
-    if (emailResponse.status === 200) {
-      return json({ success: true });
-    } else {
-      throw new Error('Failed to send email');
-    }
+      }
+      , "Fw1JaWi8CImATBuGr")
+  .then(
+    (result) => {
+      // return json({ success: true });
+      // setName("");
+      // setEmail("");
+      // setSubject("");
+      // setMessage("");
+      // setLoading(false);
+      // toast.success(Successfully sent email.);
+    },
+    // (error) => {
+    //   // setLoading(false);
+    //   // console.log(error);
+    //   throw new Error(`Email failed with status: ${emailResponse.status}`);
+    //   // toast.error(error.text);
+    // }
+  );
+    // console.log('EmailJS response:', emailResponse);
+    // if (emailResponse.status === 200) {
+    //   return json({ success: true });
+    // } else {
+    //   throw new Error(`Email failed with status: ${emailResponse.status}`);
+    // }
   } catch (error) {
-    return json({
-      errors: {
-        general: 'There was a problem sending your message. Please try again later.',
-      },
-    });
+    console.error('Error sending email:', error);
+    // return json({
+    //   errors: {
+    //     general: 'There was a problem sending your message. Please try again later.',
+    //   },
+    // });  
   }
 }
 
