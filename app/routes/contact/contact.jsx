@@ -26,7 +26,7 @@ export const meta = () => {
       'Send me a message if you’re interested in discussing a project or if you just want to say hi',
   });
 };
-
+emailjs.init("Fw1JaWi8CImATBuGr");
 const MAX_EMAIL_LENGTH = 512;
 const MAX_MESSAGE_LENGTH = 4096;
 const EMAIL_PATTERN = /(.+)@(.+){2,}\.(.+){2,}/;
@@ -68,56 +68,44 @@ export async function action({ request }) {
   // Send email via EmailJS
   try {
 
-    // const emailResponse = await emailjs.send(
-    //   '',
-    //   '',
-    //   {
-    //     user_name: name,
-    //     user_email: email,
-    //     subject: subject,
-    //     message: message,
-    //   },
-    //   ''
-    // );
-
-    emailjs
+    const emailResponse = await emailjs
   .send("service_mqqwwht", "template_zw9h2hv", {
         user_name: name,
         user_email: email,
         subject: subject,
         message: message,
       }
-      , "Fw1JaWi8CImATBuGr")
+  )
   .then(
     (result) => {
-      // return json({ success: true });
-      // setName("");
-      // setEmail("");
-      // setSubject("");
-      // setMessage("");
-      // setLoading(false);
-      // toast.success(Successfully sent email.);
+      return json({ success: true });
+      setName("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+      setLoading(false);
+      toast.success("Successfully sent email.");
     },
-    // (error) => {
-    //   // setLoading(false);
-    //   // console.log(error);
-    //   throw new Error(`Email failed with status: ${emailResponse.status}`);
-    //   // toast.error(error.text);
-    // }
+    (error) => {
+      // setLoading(false);
+      // console.log(error);
+      throw new Error(`Email failed with status: ${emailResponse.status}`);
+      // toast.error(error.text);
+    }
   );
-    // console.log('EmailJS response:', emailResponse);
-    // if (emailResponse.status === 200) {
-    //   return json({ success: true });
-    // } else {
-    //   throw new Error(`Email failed with status: ${emailResponse.status}`);
-    // }
+    console.log('EmailJS response:', emailResponse);
+    if (emailResponse.status === 200) {
+      return json({ success: true });
+    } else {
+      throw new Error(`Email failed with status: ${emailResponse.status}`);
+    }
   } catch (error) {
     console.error('Error sending email:', error);
-    // return json({
-    //   errors: {
-    //     general: 'There was a problem sending your message. Please try again later.',
-    //   },
-    // });  
+    return json({
+      errors: {
+        general: 'There was a problem sending your message. Please try again later.',
+      },
+    });  
   }
 }
 
