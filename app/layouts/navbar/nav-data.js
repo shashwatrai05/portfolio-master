@@ -13,10 +13,10 @@ export const navLinks = [
   //   label: 'TechStack',
   //   pathname: '/articles',
   // },
-  {
-    label: 'Contact',
-    pathname: '/contact',
-  },
+  // {
+  //   label: 'Contact',
+  //   pathname: '/contact',
+  // },
 ];
 
 export const socialLinks = [

@@ -50,11 +50,11 @@ export const Uses = () => {
                     <Link href="https://www.figma.com/@shashwatrai05">a few plugins</Link> that
                     you can install.
                   </ListItem>
-                  <ListItem>
+                  {/* <ListItem>
                     Any motion graphics I create are created in Adobe After Effects. So
                     far I haven’t found a non-Adobe product that’s as good. If anyone has
                     suggestions please <Link href="/contact">message me</Link>.
-                  </ListItem>
+                  </ListItem> */}
                   <ListItem>
                     For any 3D models and video editing I use{' '}
                     <Link href="https://www.blender.org/">Blender</Link>. Since 2.8 it’s
